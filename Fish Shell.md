@@ -1,8 +1,6 @@
 # Fish Shell
 
-Fish Shell 开箱即用，速度快，自带补全功能。
-
-website: https://fishshell.com/
+[fish](https://fishshell.com/) is a fully-equipped command line shell (like bash or zsh) that is smart and user-friendly. Fish supports powerful features like syntax highlighting, autosuggestions, and tab completions that just work, with nothing to learn or configure.
 
 ## 1. install
 
@@ -91,6 +89,64 @@ This is the short version; for a full explanation, like for sysadmins or integra
 
 `fish_config` is used to configure fish.
 
+### 6.2 alias
+
+```shell
+alias rmi="rm -i"
+
+# This is equivalent to entering the following function:
+function rmi --wraps rm --description 'alias rmi=rm -i'
+    rm -i $argv
+end
+
+# This needs to have the spaces escaped or "Chrome.app..."
+# will be seen as an argument to "/Applications/Google":
+alias chrome='/Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome banana'
+```
+
+### 6.3 set - display and change shell variables
+
+```shell
+# Prints all global, exported variables.
+set -xg
+
+# Sets the value of the variable $foo to be 'hi'.
+set foo hi
+
+# Appends the value "there" to the variable $foo.
+set -a foo there
+
+# Does the same thing as the previous two commands the way it would be done pre-fish 3.0.
+set foo hi
+set foo $foo there
+
+# Removes the variable $smurf
+set -e smurf
+
+# Changes the fourth element of the $PATH list to ~/bin
+set PATH[4] ~/bin
+
+# Outputs the path to Python if ``type -p`` returns true.
+if set python_path (type -p python)
+    echo "Python is at $python_path"
+end
+
+# Setting a variable doesn't modify $status!
+false
+set foo bar
+echo $status # prints 1, because of the "false" above.
+
+true
+set foo banana (false)
+echo $status # prints 1, because of the "(false)" above.
+
+# Like other shells, pass a variable to just one command:
+# Run fish with a temporary home directory.
+HOME=(mktemp -d) fish
+# Which is essentially the same as:
+begin; set -lx HOME (mktemp -d); fish; end
+```
+
 ## 5. fisher: A plugin manager for [Fish](https://fishshell.com/)
 
 Website: https://github.com/jorgebucaran/fisher
@@ -109,5 +165,19 @@ Website: https://draculatheme.com/fish
 fisher install dracula/fish
 ```
 
+### 5.3 Install SDKMAN
 
+Website: https://github.com/reitzig/sdkman-for-fish
+
+```shell
+fisher install reitzig/sdkman-for-fish@v1.4.0
+```
+
+### 5.4 Install NVM
+
+Website：https://github.com/jorgebucaran/nvm.fish
+
+```shell
+fisher install jorgebucaran/nvm.fish
+```
 
